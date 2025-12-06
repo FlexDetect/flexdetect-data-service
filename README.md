@@ -73,27 +73,13 @@ Mikrostoritev **flexdetect-data-service** je osrednji modul za upravljanje vhodn
 
 ---
 
-## Testiranje in validacija
-- Enota testi z JUnit 5
-- Integracijski testi z Mockito in Testcontainers
-- Postman zbirka za API testiranje (priložena v `tests` mapi)
-- Validacija JSON shem za vhodne podatke
-
----
 
 ## Integracija z drugimi mikrostoritvami
 - Komunikacija z **flexdetect-user-service** za avtentikacijo
 - Posredovanje očiščenih podatkov mikrostoritvi **flexdetect-ml-service**
 - Sprejem povratnih informacij za spremljanje kakovosti podatkov
 
----
 
-## Razvoj in nasveti
-- Za optimizacijo delovanja uporabljaj batch processing za uvoz
-- Implementiraj robustno rokovanje z napakami (retry, dead-letter queue)
-- Spremljaj metrike preko Prometheus in Grafana
-
----
 
 **Avtor:** Aljaž Brodar  
 **Zadnja posodobitev:** 1. december 2025
