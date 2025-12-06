@@ -33,7 +33,6 @@ Mikrostoritev **flexdetect-data-service** je osrednji modul za upravljanje vhodn
 - **Podatkovna baza:** MySQL 8.0, optimizirana s predpomnilnikom in indeksiranjem
 - **Docker:** Za kontejnerizacijo in enostavno namestitev
 - **Avtentikacija:** JWT preko flexdetect-user-service
-- **Dokumentacija API:** OpenAPI 3.0
 
 ---
 
