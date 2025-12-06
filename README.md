@@ -7,9 +7,7 @@
 - [API specifikacija](#api-specifikacija)
 - [Podatkovni modeli](#podatkovni-modeli)
 - [Primeri zahtevkov](#primeri-zahtevkov)
-- [Testiranje in validacija](#testiranje-in-validacija)
 - [Integracija z drugimi mikrostoritvami](#integracija-z-drugimi-mikrostoritvami)
-- [Razvoj in nasveti](#razvoj-in-nasveti)
 
 ---
 
