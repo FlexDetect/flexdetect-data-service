@@ -1,44 +1,100 @@
 # FlexDetect Data Service
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/FlexDetect/flexdetect-data-service/ci.yml)
-![License](https://img.shields.io/github/license/FlexDetect/flexdetect-data-service)
-
----
-
-## 📖 Vsebina
-
-- [Opis storitve](#opis-storitve)
-- [Arhitektura](#arhitektura)
+## Vsebina
+- [Pregled](#pregled)
+- [Namen mikrostoritve](#namen-mikrostoritve)
+- [Arhitektura in tehnologije](#arhitektura-in-tehnologije)
 - [API specifikacija](#api-specifikacija)
-- [Podatkovni model](#podatkovni-model)
-- [Namestitev in zagon](#namestitev-in-zagon)
-- [Testiranje](#testiranje)
-- [Integracija z ostalimi storitvami](#integracija-z-ostalimi-storitvami)
-- [Prispevanje](#prispevanje)
+- [Podatkovni modeli](#podatkovni-modeli)
+- [Primeri zahtevkov](#primeri-zahtevkov)
+- [Testiranje in validacija](#testiranje-in-validacija)
+- [Integracija z drugimi mikrostoritvami](#integracija-z-drugimi-mikrostoritvami)
+- [Razvoj in nasveti](#razvoj-in-nasveti)
 
 ---
 
-## Opis storitve
-
-Mikrostoritev **Data Service** je zadolžena za **sprejem, validacijo, čiščenje in trajno shranjevanje vhodnih podatkov** o porabi energije iz različnih objektov. Zagotavlja zanesljiv in robusten pipeline za pripravo podatkov, ki jih uporabljajo ostale komponente FlexDetect sistema.
-
-- Sprejema časovno označene meritve energije.
-- Validira integriteto in formate vhodnih podatkov.
-- Shranjuje podatke v relacijsko bazo MySQL.
-- Omogoča osnovne CRUD operacije preko REST API.
+## Pregled
+Mikrostoritev **flexdetect-data-service** je osrednji modul za upravljanje vhodnih podatkov v FlexDetect sistemu. Namenjena je sprejemanju, validaciji, čiščenju in shranjevanju velikih količin časovnih serij in metapodatkov, ki služijo kot vhod za nadaljnjo obdelavo in strojno učenje.
 
 ---
 
-## Arhitektura
+## Namen mikrostoritve
+- Sprejemanje surovih podatkov preko REST API endpointov
+- Validacija podatkovnih formatov in semantičnih pravil
+- Čiščenje in normalizacija podatkov (odstranitev napak, manjkajočih vrednosti)
+- Shranjevanje v MySQL bazo z optimizirano shemo
+- Omogočanje hitrega dostopa za naslednje faze obdelave
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant DataService
-    participant Database
+---
 
-    Client->>DataService: POST /data (JSON payload)
-    DataService->>DataService: Validate & clean data
-    DataService->>Database: Insert validated data
-    Database-->>DataService: Confirm insert
-    DataService-->>Client: 201 Created
+## Arhitektura in tehnologije
+- **Jezik:** Java 17
+- **Okvir:** Spring Boot 3
+- **Podatkovna baza:** MySQL 8.0, optimizirana s predpomnilnikom in indeksiranjem
+- **Docker:** Za kontejnerizacijo in enostavno namestitev
+- **Avtentikacija:** JWT preko flexdetect-user-service
+- **Dokumentacija API:** OpenAPI 3.0
+
+---
+
+## API specifikacija
+
+| Endpoint               | Metoda | Opis                              |
+|------------------------|--------|----------------------------------|
+| `/data/import`         | POST   | Uvoz surovih časovnih podatkov   |
+| `/data/status/{id}`    | GET    | Status validacije določenega uvoza |
+| `/data/clean/{id}`     | POST   | Zaženi čiščenje in normalizacijo |
+| `/data/export/{id}`    | GET    | Izvoz očiščenih podatkov         |
+
+**Primer POST zahtevka za uvoz:**
+
+```json
+{
+  "deviceId": "sensor-1234",
+  "timestamp": "2025-12-01T12:00:00Z",
+  "measurements": {
+    "power": 1500,
+    "voltage": 230
+  }
+}
+```
+
+---
+
+## Podatkovni modeli
+
+### Entiteta `Measurement`
+| Polje        | Tip      | Opis                         |
+|--------------|----------|------------------------------|
+| `id`         | Long     | Unikatni ID meritve          |
+| `deviceId`   | String   | Identifikator naprave        |
+| `timestamp`  | DateTime | Čas meritve                  |
+| `value`      | Float    | Merjena vrednost (npr. moč)  |
+| `type`       | String   | Tip meritve (npr. power)     |
+
+---
+
+## Testiranje in validacija
+- Enota testi z JUnit 5
+- Integracijski testi z Mockito in Testcontainers
+- Postman zbirka za API testiranje (priložena v `tests` mapi)
+- Validacija JSON shem za vhodne podatke
+
+---
+
+## Integracija z drugimi mikrostoritvami
+- Komunikacija z **flexdetect-user-service** za avtentikacijo
+- Posredovanje očiščenih podatkov mikrostoritvi **flexdetect-ml-service**
+- Sprejem povratnih informacij za spremljanje kakovosti podatkov
+
+---
+
+## Razvoj in nasveti
+- Za optimizacijo delovanja uporabljaj batch processing za uvoz
+- Implementiraj robustno rokovanje z napakami (retry, dead-letter queue)
+- Spremljaj metrike preko Prometheus in Grafana
+
+---
+
+**Avtor:** Aljaž Brodar  
+**Zadnja posodobitev:** 1. december 2025
