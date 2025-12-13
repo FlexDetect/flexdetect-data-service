@@ -6,7 +6,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "facilities_data")
-public class FacilityData {
+public class Measurement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_facilities_data")
@@ -20,7 +20,7 @@ public class FacilityData {
     @JoinColumn(name = "facilities_id_facilities", nullable = false)
     private Facility facility;
 
-    public FacilityData() {}
+    public Measurement() {}
 
     public Long getIdFacilitiesData() {
         return idFacilitiesData;

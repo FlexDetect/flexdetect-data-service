@@ -1,6 +1,7 @@
 package si.flexdetect.dataservice.model;
 
 import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "facilities")
@@ -31,6 +32,9 @@ public class Facility {
     private String contactPhone;
     @Column(name = "contact_email")
     private String contactEmail;
+    // OneToMany povezava do Measurement
+    @OneToMany(mappedBy = "facilities", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Measurement> measurements;
 
     public Facility() {}
 
