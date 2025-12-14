@@ -15,20 +15,27 @@ public class MeasurementService {
     public MeasurementService(MeasurementRepository measurementRepository) {
         this.measurementRepository = measurementRepository;
     }
-    public Measurement create(Measurement measurement) {
+    public Measurement createMeasurement(Measurement measurement) {
         return measurementRepository.save(measurement);
     }
-    public Measurement findById(Long id) {
-        return measurementRepository.findById(id).orElse(null);
+    public Optional<Measurement> getMeasurementById(Long id) {
+        return measurementRepository.findById(id);
     }
-    public List<Measurement> findAll() {
+    public List<Measurement> getAllMeasurements() {
         return measurementRepository.findAll();
     }
-    public Measurement update(Long id, Measurement measurement) {
-        return measurementRepository.findById(id).map(
-                measurement1 -> {
-                    TBCONTINUED
+    public Measurement updateMeasurement(Long id, Measurement updatedMeasurement) {
+        return  measurementRepository.findById(id).map(
+                measurement -> {
+                    measurement.setTimestamp(updatedMeasurement.getTimestamp());
+                    measurement.setPowerKw(updatedMeasurement.getPowerKw());
+                    measurement.setDrFlag(updatedMeasurement.getDrFlag());
+                    measurement.setDrCapacityKw(updatedMeasurement.getDrCapacityKw());
+                    return measurementRepository.save(measurement);
                 }
-        )
+        ).orElseThrow(() -> new RuntimeException("Measurement not found with id " + id));
+    }
+    public void deleteMeasurement(Long id) {
+        measurementRepository.deleteById(id);
     }
 }
