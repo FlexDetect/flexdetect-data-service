@@ -7,6 +7,7 @@ import si.flexdetect.dataservice.model.MeasurementFeature;
 import si.flexdetect.dataservice.service.MeasurementFeatureService;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/measurements/{measurementId}/features")
 public class MeasurementFeatureController {
@@ -16,13 +17,12 @@ public class MeasurementFeatureController {
     public MeasurementFeatureController(MeasurementFeatureService measurementFeatureService) {
         this.measurementFeatureService = measurementFeatureService;
     }
-
+    /*
     @PostMapping
-    public ResponseEntity<MeasurementFeature> createMeasurementFeature(@PathVariable Long measurementId,
-                                                                       @RequestBody MeasurementFeature feature) {
+    public ResponseEntity<MeasurementFeature> createMeasurementFeature(@RequestBody MeasurementFeature feature) {
         MeasurementFeature created = measurementFeatureService.createMeasurementFeature(feature);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
+    }*/
 
     @GetMapping("/{id}")
     public ResponseEntity<MeasurementFeature> getMeasurementFeatureById(@PathVariable Long id) {

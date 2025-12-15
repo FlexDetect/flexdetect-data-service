@@ -10,7 +10,7 @@ import si.flexdetect.dataservice.service.MeasurementService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/measurements")
+@RequestMapping("/api/facilities/{facilityId}/measurements")
 public class MeasurementController {
 
     private final MeasurementService measurementService;
@@ -20,7 +20,7 @@ public class MeasurementController {
     }
 
     @PostMapping
-    public ResponseEntity<Measurement> createMeasurement(@RequestBody Measurement measurement) {
+    public ResponseEntity<Measurement> createMeasurement(@PathVariable Long id, @RequestBody Measurement measurement) {
         Measurement created = measurementService.createMeasurement(measurement);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }

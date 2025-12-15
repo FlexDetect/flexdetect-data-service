@@ -1,2 +1,13 @@
-si/flexdetect/dataservice/model/FacilityData.class
+si/flexdetect/dataservice/model/Measurement.class
+si/flexdetect/dataservice/repository/FacilityRepository.class
+si/flexdetect/dataservice/repository/MeasurementFeatureRepository.class
+si/flexdetect/dataservice/controller/FacilityController.class
+si/flexdetect/dataservice/service/MeasurementFeatureService.class
+si/flexdetect/dataservice/service/FacilityService.class
+si/flexdetect/dataservice/service/MeasurementService.class
+si/flexdetect/dataservice/controller/MeasurementController.class
+si/flexdetect/dataservice/model/MeasurementFeature.class
+si/flexdetect/dataservice/DataServiceApplication.class
 si/flexdetect/dataservice/model/Facility.class
+si/flexdetect/dataservice/repository/MeasurementRepository.class
+si/flexdetect/dataservice/controller/MeasurementFeatureController.class

@@ -1,2 +1,13 @@
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/DataServiceApplication.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/controller/FacilityController.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/controller/MeasurementController.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/controller/MeasurementFeatureController.java
 /home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/model/Facility.java
-/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/model/FacilityData.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/model/Measurement.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/model/MeasurementFeature.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/repository/FacilityRepository.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/repository/MeasurementFeatureRepository.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/repository/MeasurementRepository.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/service/FacilityService.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/service/MeasurementFeatureService.java
+/home/aljaz/Desktop/flexdetect-backend/data-service/src/main/java/si/flexdetect/dataservice/service/MeasurementService.java
