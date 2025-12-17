@@ -9,30 +9,42 @@ import java.time.Instant;
 public class Measurement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_measurement_data", nullable = false)
-    private Long id;
+    @Column(name = "id_measurement", nullable = false)
+    private Integer id;
 
     @Column(name = "timestamp", nullable = false)
     private Instant timestamp;
 
-    @Column(name = "power_kw")
-    private Float powerKw;
+    @Column(name = "value_float")
+    private Float valueFloat;
 
-    @Column(name = "dr_flag")
-    private Byte drFlag;
+    @Column(name = "value_bool")
+    private Byte valueBool;
 
-    @Column(name = "dr_capacity_kw")
-    private Float drCapacityKw;
+    @Column(name = "value_int")
+    private Integer valueInt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "facilities_id_facilities", nullable = false)
-    private Facility facility;
+    @JoinColumn(name = "dataset_id_dataset", nullable = false)
+    private Dataset datasetIdDataset;
 
-    public Long getId() {
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "measurement_name_id_measurement_name", nullable = false)
+    private MeasurementName measurementNameIdMeasurementName;
+
+    public MeasurementName getMeasurementNameIdMeasurementName() {
+        return measurementNameIdMeasurementName;
+    }
+
+    public void setMeasurementNameIdMeasurementName(MeasurementName measurementNameIdMeasurementName) {
+        this.measurementNameIdMeasurementName = measurementNameIdMeasurementName;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,36 +56,36 @@ public class Measurement {
         this.timestamp = timestamp;
     }
 
-    public Float getPowerKw() {
-        return powerKw;
+    public Float getValueFloat() {
+        return valueFloat;
     }
 
-    public void setPowerKw(Float powerKw) {
-        this.powerKw = powerKw;
+    public void setValueFloat(Float valueFloat) {
+        this.valueFloat = valueFloat;
     }
 
-    public Byte getDrFlag() {
-        return drFlag;
+    public Byte getValueBool() {
+        return valueBool;
     }
 
-    public void setDrFlag(Byte drFlag) {
-        this.drFlag = drFlag;
+    public void setValueBool(Byte valueBool) {
+        this.valueBool = valueBool;
     }
 
-    public Float getDrCapacityKw() {
-        return drCapacityKw;
+    public Integer getValueInt() {
+        return valueInt;
     }
 
-    public void setDrCapacityKw(Float drCapacityKw) {
-        this.drCapacityKw = drCapacityKw;
+    public void setValueInt(Integer valueInt) {
+        this.valueInt = valueInt;
     }
 
-    public Facility getFacility() {
-        return facility;
+    public Dataset getDatasetIdDataset() {
+        return datasetIdDataset;
     }
 
-    public void setFacility(Facility facility) {
-        this.facility = facility;
+    public void setDatasetIdDataset(Dataset datasetIdDataset) {
+        this.datasetIdDataset = datasetIdDataset;
     }
 
 }

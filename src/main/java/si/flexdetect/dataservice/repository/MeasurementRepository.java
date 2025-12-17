@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import si.flexdetect.dataservice.model.Measurement;
 
 @Repository
-public interface MeasurementRepository extends JpaRepository<Measurement, Long> {
+public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
 
 }

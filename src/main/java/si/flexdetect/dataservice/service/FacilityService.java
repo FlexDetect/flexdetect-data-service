@@ -22,7 +22,7 @@ public class FacilityService {
         return facilityRepository.save(facility);
     }
 
-    public Optional<Facility> getFacilityById(Long id) {
+    public Optional<Facility> getFacilityById(Integer id) {
         return facilityRepository.findById(id);
     }
 
@@ -30,12 +30,10 @@ public class FacilityService {
         return facilityRepository.findAll();
     }
 
-    public Facility updateFacility(Long id, Facility updatedFacility) {
+    public Facility updateFacility(Integer id, Facility updatedFacility) {
         return facilityRepository.findById(id).map(facility -> {
             facility.setName(updatedFacility.getName());
             facility.setAddress(updatedFacility.getAddress());
-            facility.setLatitude(updatedFacility.getLatitude());
-            facility.setLongitude(updatedFacility.getLongitude());
             facility.setType(updatedFacility.getType());
             facility.setSize(updatedFacility.getSize());
             facility.setFloors(updatedFacility.getFloors());
@@ -46,7 +44,7 @@ public class FacilityService {
         }).orElseThrow(() -> new RuntimeException("Facility not found with id " + id));
     }
 
-    public void deleteFacility(Long id) {
+    public void deleteFacility(Integer id) {
         facilityRepository.deleteById(id);
     }
 }

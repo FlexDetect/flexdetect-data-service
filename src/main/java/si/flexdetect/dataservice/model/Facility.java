@@ -1,108 +1,125 @@
 package si.flexdetect.dataservice.model;
 
 import jakarta.persistence.*;
-import java.util.*;
+
+import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "facilities")
+@Table(name = "facility")
 public class Facility {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_facilities")
-    private Long idFacility;
+    @Column(name = "id_facility", nullable = false)
+    private Integer id;
 
+    @Column(name = "name", length = 45)
     private String name;
 
+    @Column(name = "address", length = 45)
     private String address;
 
-    private Double latitude;
-
-    private Double longitude;
-
+    @Column(name = "type", length = 45)
     private String type;
 
-    private Double size;
+    @Column(name = "size", precision = 10)
+    private BigDecimal size;
 
+    @Column(name = "floors")
     private Integer floors;
 
-    @Column(name = "contact_name")
+    @Column(name = "contact_name", length = 45)
     private String contactName;
-    @Column(name = "contact_phone")
+
+    @Column(name = "contact_phone", length = 45)
     private String contactPhone;
-    @Column(name = "contact_email")
+
+    @Column(name = "contact_email", length = 45)
     private String contactEmail;
-    // OneToMany povezava do Measurement
-    @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Measurement> measurements;
 
-    public Facility() {}
+    @OneToMany
+    @JoinColumn(name = "facility_id_facility")
+    private Set<Dataset> datasets = new LinkedHashSet<>();
 
-    public Long getIdFacility() {
-        return idFacility;
+    public Set<Dataset> getDatasets() {
+        return datasets;
     }
-    public void setIdFacility(Long idFacility) {
-        this.idFacility = idFacility;
+
+    public void setDatasets(Set<Dataset> datasets) {
+        this.datasets = datasets;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
-    public Double getLatitude() {
-        return latitude;
-    }
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-    public Double getLongitude() {
-        return longitude;
-    }
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }
-    public Double getSize() {
+
+    public BigDecimal getSize() {
         return size;
     }
-    public void setSize(Double size) {
+
+    public void setSize(BigDecimal size) {
         this.size = size;
     }
+
     public Integer getFloors() {
         return floors;
     }
+
     public void setFloors(Integer floors) {
         this.floors = floors;
     }
+
     public String getContactName() {
         return contactName;
     }
+
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+
     public String getContactPhone() {
         return contactPhone;
     }
+
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
+
     public String getContactEmail() {
         return contactEmail;
     }
+
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
-}
 
+}

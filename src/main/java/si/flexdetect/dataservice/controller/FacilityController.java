@@ -25,7 +25,7 @@ public class FacilityController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Facility> getFacilityById(@PathVariable Long id) {
+    public ResponseEntity<Facility> getFacilityById(@PathVariable Integer id) {
         return facilityService.getFacilityById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -37,7 +37,7 @@ public class FacilityController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Facility> updateFacility(@PathVariable Long id, @RequestBody Facility facility) {
+    public ResponseEntity<Facility> updateFacility(@PathVariable Integer id, @RequestBody Facility facility) {
         try {
             Facility updated = facilityService.updateFacility(id, facility);
             return ResponseEntity.ok(updated);
@@ -47,7 +47,7 @@ public class FacilityController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFacility(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteFacility(@PathVariable Integer id) {
         facilityService.deleteFacility(id);
         return ResponseEntity.noContent().build();
     }
