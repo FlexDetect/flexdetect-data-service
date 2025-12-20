@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import si.flexdetect.dataservice.model.Facility;
 import si.flexdetect.dataservice.service.FacilityService;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -18,37 +19,48 @@ public class FacilityController {
         this.facilityService = facilityService;
     }
 
-    @PostMapping
-    public ResponseEntity<Facility> createFacility(@RequestBody Facility facility) {
-        Facility created = facilityService.createFacility(facility);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    @GetMapping
+    public List<Facility> getAll(
+            @RequestHeader("X-User-Id") Integer userId) {
+        return facilityService.findByUserId(userId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Facility> getFacilityById(@PathVariable Integer id) {
-        return facilityService.getFacilityById(id)
+    public ResponseEntity<Facility> getOne(
+            @PathVariable Integer id,
+            @RequestHeader("X-User-Id") Integer userId) {
+
+        return facilityService.findByIdAndUserId(id, userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping
-    public ResponseEntity<List<Facility>> getAllFacilities() {
-        return ResponseEntity.ok(facilityService.getAllFacilities());
+    @PostMapping
+    public ResponseEntity<Facility> create(
+            @RequestHeader("X-User-Id") Integer userId,
+            @RequestBody Facility facility) {
+
+        facility.setUserId(userId);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(facilityService.createFacility(facility));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Facility> updateFacility(@PathVariable Integer id, @RequestBody Facility facility) {
-        try {
-            Facility updated = facilityService.updateFacility(id, facility);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public Facility update(
+            @PathVariable Integer id,
+            @RequestHeader("X-User-Id") Integer userId,
+            @RequestBody Facility facility) {
+
+        return facilityService.updateFacility(id, userId, facility);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFacility(@PathVariable Integer id) {
-        facilityService.deleteFacility(id);
+    public ResponseEntity<Void> delete(
+            @PathVariable Integer id,
+            @RequestHeader("X-User-Id") Integer userId) throws AccessDeniedException {
+
+        facilityService.deleteFacility(id, userId);
         return ResponseEntity.noContent().build();
     }
 }

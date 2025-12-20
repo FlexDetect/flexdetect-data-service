@@ -65,5 +65,4 @@ public class MeasurementName {
     public void setDataType(String dataType) {
         this.dataType = dataType;
     }
-
 }

@@ -42,6 +42,17 @@ public class Facility {
     @JoinColumn(name = "facility_id_facility")
     private Set<Dataset> datasets = new LinkedHashSet<>();
 
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public Set<Dataset> getDatasets() {
         return datasets;
     }

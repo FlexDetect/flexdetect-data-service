@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import si.flexdetect.dataservice.model.Facility;
 import si.flexdetect.dataservice.repository.FacilityRepository;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,16 +23,23 @@ public class FacilityService {
         return facilityRepository.save(facility);
     }
 
-    public Optional<Facility> getFacilityById(Integer id) {
-        return facilityRepository.findById(id);
+    public List<Facility> findByUserId(Integer userId) {
+        return facilityRepository.findByUserId(userId);
     }
 
-    public List<Facility> getAllFacilities() {
-        return facilityRepository.findAll();
+    public Optional<Facility> findByIdAndUserId(Integer id, Integer userId) {
+        return facilityRepository.findByIdAndUserId(id, userId);
     }
 
-    public Facility updateFacility(Integer id, Facility updatedFacility) {
-        return facilityRepository.findById(id).map(facility -> {
+    public void deleteFacility(Integer id, Integer userId) throws AccessDeniedException {
+        int deleted = facilityRepository.deleteByIdAndUserId(id, userId);
+        if (deleted == 0) {
+            throw new AccessDeniedException("Facility not found or not yours.");
+        }
+    }
+
+    public Facility updateFacility(Integer id, Integer userId, Facility updatedFacility) {
+        return facilityRepository.findByIdAndUserId(id, userId).map(facility -> {
             facility.setName(updatedFacility.getName());
             facility.setAddress(updatedFacility.getAddress());
             facility.setType(updatedFacility.getType());
@@ -41,10 +49,6 @@ public class FacilityService {
             facility.setContactPhone(updatedFacility.getContactPhone());
             facility.setContactEmail(updatedFacility.getContactEmail());
             return facilityRepository.save(facility);
-        }).orElseThrow(() -> new RuntimeException("Facility not found with id " + id));
-    }
-
-    public void deleteFacility(Integer id) {
-        facilityRepository.deleteById(id);
+        }).orElseThrow(() -> new RuntimeException("Facility not found or not owned by user"));
     }
 }

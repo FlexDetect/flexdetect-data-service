@@ -5,8 +5,13 @@ import org.springframework.stereotype.Repository;
 import si.flexdetect.dataservice.model.Dataset;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DatasetRepository extends JpaRepository<Dataset, Integer> {
     List<Dataset> findByFacilityId(Integer facilityId);
+
+    Optional<Dataset> findByIdAndFacilityId(Integer id, Integer facilityId);
+
+    int deleteByIdAndFacilityId(Integer id, Integer facilityId);
 }
