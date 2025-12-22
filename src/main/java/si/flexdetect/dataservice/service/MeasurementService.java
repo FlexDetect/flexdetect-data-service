@@ -18,6 +18,4 @@ public class MeasurementService {
     public Measurement createMeasurement(Measurement measurement) {
         return measurementRepository.save(measurement);
     }
-
-
 }
