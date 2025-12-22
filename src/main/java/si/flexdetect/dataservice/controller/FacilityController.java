@@ -20,26 +20,19 @@ public class FacilityController {
     }
 
     @GetMapping
-    public List<Facility> getAll(
-            @RequestHeader("X-User-Id") Integer userId) {
+    public List<Facility> getAll(@RequestHeader("X-User-Id") Integer userId) {
         return facilityService.findByUserId(userId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Facility> getOne(
-            @PathVariable Integer id,
-            @RequestHeader("X-User-Id") Integer userId) {
-
+    public ResponseEntity<Facility> getById(@PathVariable Integer id, @RequestHeader("X-User-Id") Integer userId) {
         return facilityService.findByIdAndUserId(id, userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Facility> create(
-            @RequestHeader("X-User-Id") Integer userId,
-            @RequestBody Facility facility) {
-
+    public ResponseEntity<Facility> create(@RequestHeader("X-User-Id") Integer userId, @RequestBody Facility facility) {
         facility.setUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -47,19 +40,12 @@ public class FacilityController {
     }
 
     @PutMapping("/{id}")
-    public Facility update(
-            @PathVariable Integer id,
-            @RequestHeader("X-User-Id") Integer userId,
-            @RequestBody Facility facility) {
-
+    public Facility update(@PathVariable Integer id, @RequestHeader("X-User-Id") Integer userId, @RequestBody Facility facility) {
         return facilityService.updateFacility(id, userId, facility);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Integer id,
-            @RequestHeader("X-User-Id") Integer userId) throws AccessDeniedException {
-
+    public ResponseEntity<Void> delete(@PathVariable Integer id, @RequestHeader("X-User-Id") Integer userId) throws AccessDeniedException {
         facilityService.deleteFacility(id, userId);
         return ResponseEntity.noContent().build();
     }

@@ -1,6 +1,5 @@
 package si.flexdetect.dataservice.service;
 
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import si.flexdetect.dataservice.model.Measurement;
@@ -20,6 +19,5 @@ public class MeasurementService {
         return measurementRepository.save(measurement);
     }
 
-    public
 
 }
