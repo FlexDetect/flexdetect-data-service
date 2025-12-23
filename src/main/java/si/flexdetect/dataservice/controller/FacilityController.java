@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.flexdetect.dataservice.model.Facility;
+import si.flexdetect.dataservice.security.SecurityUtils;
 import si.flexdetect.dataservice.service.FacilityService;
 
 import java.nio.file.AccessDeniedException;
@@ -20,19 +21,22 @@ public class FacilityController {
     }
 
     @GetMapping
-    public List<Facility> getAll(@RequestHeader("X-User-Id") Integer userId) {
+    public List<Facility> getAll() {
+        Integer userId = SecurityUtils.userId();
         return facilityService.findByUserId(userId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Facility> getById(@PathVariable Integer id, @RequestHeader("X-User-Id") Integer userId) {
+    public ResponseEntity<Facility> getById(@PathVariable Integer id) {
+        Integer userId = SecurityUtils.userId();
         return facilityService.findByIdAndUserId(id, userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Facility> create(@RequestHeader("X-User-Id") Integer userId, @RequestBody Facility facility) {
+    public ResponseEntity<Facility> create(@RequestBody Facility facility) {
+        Integer userId = SecurityUtils.userId();
         facility.setUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -40,12 +44,14 @@ public class FacilityController {
     }
 
     @PutMapping("/{id}")
-    public Facility update(@PathVariable Integer id, @RequestHeader("X-User-Id") Integer userId, @RequestBody Facility facility) {
+    public Facility update(@PathVariable Integer id, @RequestBody Facility facility) {
+        Integer userId = SecurityUtils.userId();
         return facilityService.updateFacility(id, userId, facility);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id, @RequestHeader("X-User-Id") Integer userId) throws AccessDeniedException {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws AccessDeniedException {
+        Integer userId = SecurityUtils.userId();
         facilityService.deleteFacility(id, userId);
         return ResponseEntity.noContent().build();
     }
