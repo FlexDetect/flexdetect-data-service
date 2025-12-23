@@ -4,8 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.flexdetect.dataservice.model.MeasurementName;
+import si.flexdetect.dataservice.security.SecurityUtils;
 import si.flexdetect.dataservice.service.MeasurementNameService;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -18,39 +20,39 @@ public class MeasurementNameController {
         this.measurementNameService = measurementNameService;
     }
 
-    @PostMapping
-    public ResponseEntity<MeasurementName> createMeasurementName(@RequestBody MeasurementName measurementName) {
-        MeasurementName created = measurementNameService.createMeasurementName(measurementName);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    @GetMapping
+    public List<MeasurementName> getAll() {
+        Integer userId = SecurityUtils.userId();
+        return measurementNameService.findByUserId(userId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MeasurementName> getMeasurementNameById(@PathVariable Integer id) {
-        return measurementNameService.getMeasurementNameById(id)
+    public ResponseEntity<MeasurementName> getById(@PathVariable Integer id) {
+        Integer userId = SecurityUtils.userId();
+        return measurementNameService.findByIdAndUserId(id, userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    /*
-    @GetMapping
-    public ResponseEntity<List<MeasurementName>> getAllMeasurementNames() {
-        return ResponseEntity.ok(measurementNameService.getAllMeasurementNames());
-    }*/
+    @PostMapping
+    public ResponseEntity<MeasurementName> create(@RequestBody MeasurementName measurementName) {
+        Integer userId = SecurityUtils.userId();
+        measurementName.setUserId(userId);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(measurementNameService.createMeasurementName(measurementName));
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MeasurementName> updateMeasurementName(@PathVariable Integer id,
-                                                                 @RequestBody MeasurementName measurementName) {
-        try {
-            MeasurementName updated = measurementNameService.updateMeasurementName(id, measurementName);
-            return ResponseEntity.ok(updated);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public MeasurementName update(@PathVariable Integer id, @RequestBody MeasurementName measurementName) {
+        Integer userId = SecurityUtils.userId();
+        return measurementNameService.updateMeasurementName(id, userId, measurementName);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMeasurementName(@PathVariable Integer id) {
-        measurementNameService.deleteMeasurementName(id);
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws AccessDeniedException {
+        Integer userId = SecurityUtils.userId();
+        measurementNameService.deleteMeasurementName(id, userId);
         return ResponseEntity.noContent().build();
     }
 }

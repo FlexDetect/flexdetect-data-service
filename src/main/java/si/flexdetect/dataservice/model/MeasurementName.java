@@ -26,6 +26,17 @@ public class MeasurementName {
     @JoinColumn(name = "measurement_name_id_measurement_name")
     private Set<Measurement> measurements = new LinkedHashSet<>();
 
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public Set<Measurement> getMeasurements() {
         return measurements;
     }

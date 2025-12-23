@@ -58,9 +58,7 @@ public class DatasetController {
     public ResponseEntity<Dataset> updateDataset(@PathVariable Integer facilityId, @PathVariable Integer id, @RequestBody Dataset updatedDataset) {
         Integer userId = SecurityUtils.userId();
         verifyFacilityOwnership(facilityId, userId);
-
         Dataset updated = datasetService.updateDatasetById(id, updatedDataset);
-
         return ResponseEntity.ok(updated);
     }
 
@@ -68,7 +66,6 @@ public class DatasetController {
     public ResponseEntity<Void> deleteDatasetById(@PathVariable Integer facilityId, @PathVariable Integer id) {
         Integer userId = SecurityUtils.userId();
         verifyFacilityOwnership(facilityId, userId);
-
         datasetService.deleteDatasetById(id);
         return ResponseEntity.noContent().build();
     }
