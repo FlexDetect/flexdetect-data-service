@@ -15,4 +15,6 @@ public interface DatasetRepository extends JpaRepository<Dataset, Integer> {
     int deleteByIdAndFacility_UserId(Integer id, Integer userId);
 
     Optional<Dataset> findByIdAndFacility_UserId(Integer id, Integer userId);
+
+    boolean existsByIdAndFacility_UserId(Integer id, Integer userId);
 }
