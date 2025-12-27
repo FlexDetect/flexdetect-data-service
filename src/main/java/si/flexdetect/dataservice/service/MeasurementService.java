@@ -3,6 +3,7 @@ package si.flexdetect.dataservice.service;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import si.flexdetect.dataservice.model.Dataset;
 import si.flexdetect.dataservice.model.Measurement;
 import si.flexdetect.dataservice.repository.DatasetRepository;
 import si.flexdetect.dataservice.repository.MeasurementRepository;
@@ -24,17 +25,17 @@ public class MeasurementService {
         this.datasetRepository = datasetRepository;
     }
 
-    public Measurement createMeasurement(Measurement measurement) {
+    public Measurement createMeasurement(Measurement measurement, Integer datasetId) {
         Integer userId = SecurityUtils.userId();
-        Integer datasetId = measurement.getDataset().getId();
-        boolean allowed =
-                datasetRepository.existsByIdAndFacility_UserId(datasetId, userId);
 
-        if (!allowed) {
-            throw new AccessDeniedException("Dataset not owned by user");
-        }
+        Dataset dataset = datasetRepository
+                .findByIdAndFacility_UserId(datasetId, userId)
+                .orElseThrow(() -> new AccessDeniedException("Dataset not owned by user"));
+
+        measurement.setDatasetIdDataset(dataset);
         return measurementRepository.save(measurement);
     }
+
 
     public List<Measurement> getMeasurementByDatasetId(Integer datasetId) {
         Integer userId = SecurityUtils.userId();
