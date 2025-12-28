@@ -8,9 +8,18 @@ public final class SecurityUtils {
 
     public static Integer userId() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getDetails() == null) {
-            throw new IllegalStateException("No authenticated user");
+
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new IllegalStateException("Unauthenticated");
         }
-        return (Integer) auth.getDetails();
+
+        Object principal = auth.getPrincipal();
+
+        if (!(principal instanceof Integer)) {
+            throw new IllegalStateException("Invalid principal type: " + principal);
+        }
+
+        return (Integer) principal;
     }
+
 }

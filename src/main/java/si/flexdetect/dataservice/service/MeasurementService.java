@@ -32,7 +32,7 @@ public class MeasurementService {
                 .findByIdAndFacility_UserId(datasetId, userId)
                 .orElseThrow(() -> new AccessDeniedException("Dataset not owned by user"));
 
-        measurement.setDatasetIdDataset(dataset);
+        measurement.setDataset(dataset);
         return measurementRepository.save(measurement);
     }
 

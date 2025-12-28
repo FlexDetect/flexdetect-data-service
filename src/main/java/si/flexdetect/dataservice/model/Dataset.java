@@ -1,5 +1,6 @@
 package si.flexdetect.dataservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -22,9 +23,11 @@ public class Dataset {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "facility_id_facility", nullable = false)
+    @JsonBackReference
     private Facility facility;
 
-    @OneToMany(mappedBy = "datasetIdDataset")
+
+    @OneToMany(mappedBy = "dataset")
     private Set<Measurement> measurements = new LinkedHashSet<>();
 
     public Set<Measurement> getMeasurements() {

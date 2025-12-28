@@ -1,5 +1,6 @@
 package si.flexdetect.dataservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -38,9 +39,11 @@ public class Facility {
     @Column(name = "contact_email", length = 45)
     private String contactEmail;
 
-    @OneToMany
-    @JoinColumn(name = "facility_id_facility")
+    @OneToMany(mappedBy = "facility")
+    @JsonManagedReference
     private Set<Dataset> datasets = new LinkedHashSet<>();
+
+
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;

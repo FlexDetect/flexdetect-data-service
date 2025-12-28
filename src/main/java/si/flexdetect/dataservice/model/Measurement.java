@@ -26,7 +26,7 @@ public class Measurement {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "dataset_id_dataset", nullable = false)
-    private Dataset datasetIdDataset;
+    private Dataset dataset;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "measurement_name_id_measurement_name", nullable = false)
@@ -80,12 +80,12 @@ public class Measurement {
         this.valueInt = valueInt;
     }
 
-    public Dataset getDatasetIdDataset() {
-        return datasetIdDataset;
+    public Dataset getDataset() {
+        return dataset;
     }
 
-    public void setDatasetIdDataset(Dataset datasetIdDataset) {
-        this.datasetIdDataset = datasetIdDataset;
+    public void setDataset(Dataset dataset) {
+        this.dataset = dataset;
     }
 
 }
