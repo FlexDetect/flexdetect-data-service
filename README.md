@@ -40,7 +40,7 @@ Mikrostoritev **flexdetect-data-service** je osrednji modul za upravljanje vhodn
 | Metoda  | Endpoint                   | Opis                              | Payload                                                                                      |
 |---------|----------------------------|----------------------------------|----------------------------------------------------------------------------------------------|
 | GET     | /api/facilities            | Pridobi seznam vseh facilityjev  | -                                                                                            |
-| POST    | /api/facilities            | Ustvari nov facility             | `{ name, address, type, sizeSqm, floors, contactName, contactPhone, contactEmail, mlDataJson? }` |
+| POST    | /api/facilities            | Ustvari nov facility             | `{ name, address, type, sizeSqm, floors, contactName, contactPhone, contactEmail}` |
 | PUT     | /api/facilities/{facilityId} | Posodobi obstoječi facility     | -                                                                                            |
 | DELETE  | /api/facilities/{facilityId} | Izbriši facility                | -                                                                                            |
 
