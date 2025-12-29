@@ -27,14 +27,19 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwtUtil.isTokenValid(token)) {
                 Integer userId = jwtUtil.extractUserId(token);
                 var authentication = new UsernamePasswordAuthenticationToken(
-                                userId,      // principal = userId directly
-                                null,
-                                List.of()    // empty authorities or roles if not needed here
+                        userId,
+                        null,
+                        List.of()  // no authorities here, or add if needed
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                // Invalid token: reject request immediately
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+                return;  // Important: stop filter chain here
             }
         }
         filterChain.doFilter(request, response);
     }
 }
+
 

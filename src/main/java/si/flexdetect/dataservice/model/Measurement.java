@@ -1,5 +1,6 @@
 package si.flexdetect.dataservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -24,12 +25,15 @@ public class Measurement {
     @Column(name = "value_int")
     private Integer valueInt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dataset_id_dataset", nullable = false)
+    @JsonBackReference
     private Dataset dataset;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "measurement_name_id_measurement_name", nullable = false)
+    @JsonBackReference
     private MeasurementName measurementNameIdMeasurementName;
 
     public MeasurementName getMeasurementNameIdMeasurementName() {

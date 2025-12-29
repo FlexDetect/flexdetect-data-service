@@ -1,6 +1,7 @@
 package si.flexdetect.dataservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -27,8 +28,10 @@ public class Dataset {
     private Facility facility;
 
 
-    @OneToMany(mappedBy = "dataset")
-    private Set<Measurement> measurements = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Measurement> measurements;
+
 
     public Set<Measurement> getMeasurements() {
         return measurements;
