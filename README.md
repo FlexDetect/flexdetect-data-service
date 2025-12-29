@@ -5,8 +5,7 @@
 - [Namen mikrostoritve](#namen-mikrostoritve)
 - [Arhitektura in tehnologije](#arhitektura-in-tehnologije)
 - [API specifikacija](#api-specifikacija)
-- [Podatkovni modeli](#podatkovni-modeli)
-- [Primeri zahtevkov](#primeri-zahtevkov)
+- [Podatkovni modeli](#glavni-api-endpointi)
 - [Integracija z drugimi mikrostoritvami](#integracija-z-drugimi-mikrostoritvami)
 
 ---
@@ -18,9 +17,9 @@ Mikrostoritev **flexdetect-data-service** je osrednji modul za upravljanje vhodn
 
 ## Namen mikrostoritve
 - Sprejemanje surovih podatkov preko REST API endpointov
-- Validacija podatkovnih formatov in semantičnih pravil
+- Validacija podatkovnih formatov
 - Čiščenje in normalizacija podatkov (odstranitev napak, manjkajočih vrednosti)
-- Shranjevanje v MySQL bazo z optimizirano shemo
+- Shranjevanje v MySQL bazo
 - Omogočanje hitrega dostopa za naslednje faze obdelave
 
 ---
@@ -34,50 +33,52 @@ Mikrostoritev **flexdetect-data-service** je osrednji modul za upravljanje vhodn
 
 ---
 
-## API specifikacija
+## Glavni API endpointi
 
-| Endpoint               | Metoda | Opis                              |
-|------------------------|--------|----------------------------------|
-| `/data/import`         | POST   | Uvoz surovih časovnih podatkov   |
-| `/data/status/{id}`    | GET    | Status validacije določenega uvoza |
-| `/data/clean/{id}`     | POST   | Zaženi čiščenje in normalizacijo |
-| `/data/export/{id}`    | GET    | Izvoz očiščenih podatkov         |
+## Entiteta Facility
 
-**Primer POST zahtevka za uvoz:**
+| Metoda  | Endpoint                   | Opis                              | Payload                                                                                      |
+|---------|----------------------------|----------------------------------|----------------------------------------------------------------------------------------------|
+| GET     | /api/facilities            | Pridobi seznam vseh facilityjev  | -                                                                                            |
+| POST    | /api/facilities            | Ustvari nov facility             | `{ name, address, type, sizeSqm, floors, contactName, contactPhone, contactEmail, mlDataJson? }` |
+| PUT     | /api/facilities/{facilityId} | Posodobi obstoječi facility     | -                                                                                            |
+| DELETE  | /api/facilities/{facilityId} | Izbriši facility                | -                                                                                            |
 
-```json
-{
-  "deviceId": "sensor-1234",
-  "timestamp": "2025-12-01T12:00:00Z",
-  "measurements": {
-    "power": 1500,
-    "voltage": 230
-  }
-}
-```
+## Entiteta Dataset
 
----
+| Metoda  | Endpoint                                    | Opis                                   | Payload                      |
+|---------|---------------------------------------------|---------------------------------------|------------------------------|
+| GET     | /api/facilities/{facilityId}/datasets       | Pridobi vse dataset-e za določen facility | -                            |
+| POST    | /api/facilities/{facilityId}/datasets       | Ustvari nov dataset za določen facility | `{ source, createdAt }`       |
+| PUT     | /api/facilities/{facilityId}/datasets/{datasetId} | Posodobi dataset                    | -                            |
+| DELETE  | /api/facilities/{facilityId}/datasets/{datasetId} | Izbriši dataset                   | -                            |
 
-## Podatkovni modeli
+## Entiteta MeasurementName (Custom Fields)
 
-### Entiteta `Measurement`
-| Polje        | Tip      | Opis                         |
-|--------------|----------|------------------------------|
-| `id`         | Long     | Unikatni ID meritve          |
-| `deviceId`   | String   | Identifikator naprave        |
-| `timestamp`  | DateTime | Čas meritve                  |
-| `value`      | Float    | Merjena vrednost (npr. moč)  |
-| `type`       | String   | Tip meritve (npr. power)     |
+| Metoda  | Endpoint                     | Opis                            | Payload                    |
+|---------|------------------------------|--------------------------------|----------------------------|
+| GET     | /api/measurement-name         | Pridobi vse meritve uporabnika  | -                          |
+| POST    | /api/measurement-name         | Ustvari nov measurement name   | `{ name, unit, dataType }`  |
+| PUT     | /api/measurement-name/{id}    | Posodobi measurement name      | -                          |
+| DELETE  | /api/measurement-name/{id}    | Izbriši measurement name       | -                          |
 
----
+## Entiteta Measurement
+
+| Metoda  | Endpoint                                    | Opis                           | Payload                                                                                          |
+|---------|---------------------------------------------|-------------------------------|--------------------------------------------------------------------------------------------------|
+| GET     | /api/datasets/{datasetId}/measurements      | Pridobi meritve za dataset     | -                                                                                                |
+| GET     | /api/datasets/{datasetId}/measurements/{id} | Pridobi posamezno meritev      | -                                                                                                |
+| POST    | /api/datasets/{datasetId}/measurements      | Ustvari novo meritev           | `{ measurementNameIdMeasurementName, timestamp, valueInt?, valueFloat?, valueBool? }`             |
+| PUT     | /api/datasets/{datasetId}/measurements/{id} | Posodobi meritev               | -                                                                                                |
+| DELETE  | /api/datasets/{datasetId}/measurements/{id} | Izbriši meritev                | -                                                                                                |
+
+**Opomba:** Pri meritvah (`Measurement`), je veljavna samo ena od vrednosti `valueInt`, `valueFloat` ali `valueBool`.
 
 
 ## Integracija z drugimi mikrostoritvami
 - Komunikacija z **flexdetect-user-service** za avtentikacijo
 - Posredovanje očiščenih podatkov mikrostoritvi **flexdetect-ml-service**
-- Sprejem povratnih informacij za spremljanje kakovosti podatkov
 
 
 
 **Avtor:** Aljaž Brodar  
-**Zadnja posodobitev:** 1. december 2025
