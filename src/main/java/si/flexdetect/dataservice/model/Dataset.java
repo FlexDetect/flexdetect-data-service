@@ -1,11 +1,11 @@
 package si.flexdetect.dataservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -13,23 +13,19 @@ import java.util.Set;
 public class Dataset {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_dataset", nullable = false)
+    @Column(name = "id_dataset")
     private Integer id;
 
-    @Column(name = "source", length = 45)
     private String source;
-
-    @Column(name = "created_at")
     private Instant createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facility_id_facility", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Facility facility;
 
-
-    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "dataset", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Measurement> measurements;
 
 

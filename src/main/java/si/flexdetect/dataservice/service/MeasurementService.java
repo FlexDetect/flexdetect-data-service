@@ -54,8 +54,6 @@ public class MeasurementService {
         return measurementRepository.save(m);
     }
 
-
-
     public List<Measurement> getMeasurementByDatasetId(Integer datasetId) {
         Integer userId = SecurityUtils.userId();
         return measurementRepository.findByDataset_IdAndDataset_Facility_UserId(datasetId, userId);

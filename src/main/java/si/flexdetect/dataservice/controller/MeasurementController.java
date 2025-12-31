@@ -1,6 +1,5 @@
 package si.flexdetect.dataservice.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.flexdetect.dataservice.dto.MeasurementCreateRequest;
@@ -24,7 +23,6 @@ public class MeasurementController {
     public Measurement create(@PathVariable Integer datasetId, @RequestBody MeasurementCreateRequest req) {
         return measurementService.createMeasurement(req, datasetId);
     }
-
 
     @GetMapping
     public List<Measurement> getAll(@PathVariable Integer datasetId) {

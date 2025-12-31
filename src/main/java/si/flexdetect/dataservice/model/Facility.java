@@ -12,41 +12,24 @@ import java.util.Set;
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_facility", nullable = false)
+    @Column(name = "id_facility")
     private Integer id;
-
-    @Column(name = "name", length = 45)
-    private String name;
-
-    @Column(name = "address", length = 45)
-    private String address;
-
-    @Column(name = "type", length = 45)
-    private String type;
-
-    @Column(name = "size", precision = 10)
-    private BigDecimal size;
-
-    @Column(name = "floors")
-    private Integer floors;
-
-    @Column(name = "contact_name", length = 45)
-    private String contactName;
-
-    @Column(name = "contact_phone", length = 45)
-    private String contactPhone;
-
-    @Column(name = "contact_email", length = 45)
-    private String contactEmail;
-
-    @OneToMany(mappedBy = "facility")
-    @JsonManagedReference
-    private Set<Dataset> datasets = new LinkedHashSet<>();
-
-
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
+
+    private String name;
+    private String address;
+    private String type;
+    private BigDecimal size;
+    private Integer floors;
+    private String contactName;
+    private String contactPhone;
+    private String contactEmail;
+
+    @OneToMany(mappedBy = "facility", fetch = FetchType.LAZY)
+    private Set<Dataset> datasets = new LinkedHashSet<>();
+
 
     public Integer getUserId() {
         return userId;

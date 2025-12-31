@@ -1,30 +1,23 @@
 package si.flexdetect.dataservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@JsonIgnoreProperties("measurements")
 @Entity
 @Table(name = "measurement_name")
 public class MeasurementName {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_measurement_name", nullable = false)
+    @Column(name = "id_measurement_name")
     private Integer id;
 
-    @Column(name = "name", length = 45)
     private String name;
-
-    @Column(name = "unit", length = 45)
     private String unit;
-
-    @Column(name = "data_type", length = 45)
     private String dataType;
-
-    @OneToMany
-    @JoinColumn(name = "measurement_name_id_measurement_name")
-    private Set<Measurement> measurements = new LinkedHashSet<>();
 
     @Column(name = "user_id", nullable = false)
     private Integer userId;
@@ -37,13 +30,6 @@ public class MeasurementName {
         this.userId = userId;
     }
 
-    public Set<Measurement> getMeasurements() {
-        return measurements;
-    }
-
-    public void setMeasurements(Set<Measurement> measurements) {
-        this.measurements = measurements;
-    }
 
     public Integer getId() {
         return id;

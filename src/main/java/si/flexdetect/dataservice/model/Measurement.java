@@ -1,6 +1,7 @@
 package si.flexdetect.dataservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -10,38 +11,30 @@ import java.time.Instant;
 public class Measurement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_measurement", nullable = false)
+    @Column(name = "id_measurement")
     private Integer id;
 
-    @Column(name = "timestamp", nullable = false)
     private Instant timestamp;
 
-    @Column(name = "value_float")
     private Float valueFloat;
-
-    @Column(name = "value_bool")
-    private Byte valueBool;
-
-    @Column(name = "value_int")
     private Integer valueInt;
+    private Byte valueBool;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dataset_id_dataset", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Dataset dataset;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "measurement_name_id_measurement_name", nullable = false)
-    @JsonBackReference
-    private MeasurementName measurementNameIdMeasurementName;
+    private MeasurementName measurementName;
 
     public MeasurementName getMeasurementNameIdMeasurementName() {
-        return measurementNameIdMeasurementName;
+        return measurementName;
     }
 
     public void setMeasurementNameIdMeasurementName(MeasurementName measurementNameIdMeasurementName) {
-        this.measurementNameIdMeasurementName = measurementNameIdMeasurementName;
+        this.measurementName = measurementNameIdMeasurementName;
     }
 
     public Integer getId() {
