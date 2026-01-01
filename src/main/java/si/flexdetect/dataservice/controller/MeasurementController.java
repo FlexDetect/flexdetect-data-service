@@ -2,8 +2,10 @@ package si.flexdetect.dataservice.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import si.flexdetect.dataservice.dto.MeasurementBulkCreateRequest;
 import si.flexdetect.dataservice.dto.MeasurementCreateRequest;
 import si.flexdetect.dataservice.model.Measurement;
+import si.flexdetect.dataservice.security.SecurityUtils;
 import si.flexdetect.dataservice.service.MeasurementService;
 
 import java.time.Instant;
@@ -21,8 +23,15 @@ public class MeasurementController {
 
     @PostMapping
     public Measurement create(@PathVariable Integer datasetId, @RequestBody MeasurementCreateRequest req) {
+        System.out.println("test");
         return measurementService.createMeasurement(req, datasetId);
     }
+    @PostMapping("/bulk")
+    public ResponseEntity<Void> bulkInsert(@PathVariable Integer datasetId, @RequestBody MeasurementBulkCreateRequest request) {
+        measurementService.bulkInsert(datasetId, request);
+        return ResponseEntity.accepted().build();
+    }
+
 
     @GetMapping
     public List<Measurement> getAll(@PathVariable Integer datasetId) {
@@ -46,4 +55,10 @@ public class MeasurementController {
         measurementService.deleteMeasurementById(id);
         return ResponseEntity.noContent().build();
     }
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllForDataset(@PathVariable Integer datasetId) {
+        measurementService.deleteAllByDatasetId(datasetId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
