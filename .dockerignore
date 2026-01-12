@@ -1,0 +1,12 @@
+*
+!Dockerfile
+!target/
+!target/data-service-1.0.0.jar
+
+.git
+.vscode
+.idea
+node_modules
+*.log
+*.tmp
+.DS_Store

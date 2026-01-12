@@ -76,7 +76,7 @@ public class MeasurementService {
         }
 
         String sql = """
-            INSERT INTO measurement (
+            INSERT IGNORE INTO measurement (
                 dataset_id_dataset,
                 measurement_name_id_measurement_name,
                 timestamp,
